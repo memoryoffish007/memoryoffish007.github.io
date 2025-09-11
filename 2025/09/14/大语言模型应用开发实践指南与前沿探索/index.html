@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>大语言模型应用开发实践指南与前沿探索 | 翎羽的个人博客</title>
+    <meta name="author" content="翎羽" />
+    <meta name="description" content="一位程序员的技术分享与生活碎碎念，涵盖 Java、前端、读书心得等" />
+    <meta name="keywords" content="技术博客,Java,前端开发,读书,生活随笔" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>翎羽的个人博客</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+        <a href="/projects">
+            <i class="fa-solid fa-briefcase fa-fw"></i>
+            <span>&ensp;Projects</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;翎羽的个人博客</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+                <a href="/projects">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-briefcase fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Projects</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>大语言模型应用开发实践指南与前沿探索</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/9/14
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                人工智能
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="color: #00a596">
+                    人工智能
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/LLM/" style="color: #ffa2c4">
+                    LLM
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" style="color: #03a9f4">
+                    大语言模型
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/AI-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/" style="color: #00a596">
+                    AI 应用开发
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="大语言模型应用开发实践指南与前沿探索"><a href="#大语言模型应用开发实践指南与前沿探索" class="headerlink" title="大语言模型应用开发实践指南与前沿探索"></a>大语言模型应用开发实践指南与前沿探索</h1><p>大语言模型 (LLM) 技术的飞速发展正在深刻改变软件开发的方式。从智能助手到内容创作，从代码生成到数据分析，LLM 正在各个领域展现出强大的应用潜力。本文将提供一套完整的 LLM 应用开发实践指南，并探索最新的前沿技术。</p>
+<h2 id="一、LLM-应用开发基础"><a href="#一、LLM-应用开发基础" class="headerlink" title="一、LLM 应用开发基础"></a>一、LLM 应用开发基础</h2><h3 id="1-LLM-技术栈概览"><a href="#1-LLM-技术栈概览" class="headerlink" title="1. LLM 技术栈概览"></a>1. LLM 技术栈概览</h3><p>现代 LLM 应用开发涉及多个技术组件和工具链，以下是一个典型的技术栈：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>技术&#x2F;工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基础模型</td>
+<td>GPT-4、Claude 3、Llama 3、Gemini</td>
+<td>提供核心语言理解和生成能力</td>
+</tr>
+<tr>
+<td>框架</td>
+<td>LangChain、LlamaIndex、Semantic Kernel</td>
+<td>简化 LLM 应用开发</td>
+</tr>
+<tr>
+<td>向量数据库</td>
+<td>Pinecone、Milvus、ChromaDB、FAISS</td>
+<td>存储和检索向量嵌入</td>
+</tr>
+<tr>
+<td>部署工具</td>
+<td>Docker、Kubernetes、Vercel、AWS Lambda</td>
+<td>部署和扩展 LLM 应用</td>
+</tr>
+<tr>
+<td>监控工具</td>
+<td>LangSmith、PromptWatch、Helicone</td>
+<td>监控和优化 LLM 应用性能</td>
+</tr>
+</tbody></table>
+<p><img src="/images/placeholder.svg" alt="LLM 应用架构图"></p>
+<h3 id="2-LLM-应用的核心模式"><a href="#2-LLM-应用的核心模式" class="headerlink" title="2. LLM 应用的核心模式"></a>2. LLM 应用的核心模式</h3><h4 id="2-1-提示工程模式"><a href="#2-1-提示工程模式" class="headerlink" title="2.1 提示工程模式"></a>2.1 提示工程模式</h4><p>提示工程是 LLM 应用开发的基础，通过精心设计的提示词引导模型生成期望的输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础提示工程示例</span></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;你是一个专业的技术文档翻译。请将以下英文技术文档翻译成中文，保持专业术语的准确性，并确保语句通顺易懂。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#123;documentation&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">response = llm.generate(prompt.<span class="built_in">format</span>(documentation=english_doc))</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-检索增强生成-RAG-模式"><a href="#2-2-检索增强生成-RAG-模式" class="headerlink" title="2.2 检索增强生成 (RAG) 模式"></a>2.2 检索增强生成 (RAG) 模式</h4><p>RAG 模式通过检索外部知识库的相关信息，增强 LLM 的回答能力和准确性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># RAG 模式示例</span></span><br><span class="line"><span class="keyword">from</span> langchain.document_loaders <span class="keyword">import</span> TextLoader</span><br><span class="line"><span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载文档</span></span><br><span class="line">loader = TextLoader(<span class="string">&quot;company_policy.txt&quot;</span>)</span><br><span class="line">documents = loader.load()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建向量存储</span></span><br><span class="line">embeddings = OpenAIEmbeddings()</span><br><span class="line">vector_store = Chroma.from_documents(documents, embeddings)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建检索链</span></span><br><span class="line">qa_chain = RetrievalQA.from_chain_type(</span><br><span class="line">    llm=OpenAI(),</span><br><span class="line">    chain_type=<span class="string">&quot;stuff&quot;</span>,</span><br><span class="line">    retriever=vector_store.as_retriever()</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提问</span></span><br><span class="line">result = qa_chain.run(<span class="string">&quot;公司的年假政策是什么？&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-代理模式"><a href="#2-3-代理模式" class="headerlink" title="2.3 代理模式"></a>2.3 代理模式</h4><p>代理模式让 LLM 能够使用工具来完成复杂任务，如搜索、计算、代码执行等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代理模式示例</span></span><br><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> AgentType, initialize_agent, load_tools</span><br><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 LLM</span></span><br><span class="line">llm = OpenAI()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载工具</span></span><br><span class="line">tools = load_tools([<span class="string">&quot;serpapi&quot;</span>, <span class="string">&quot;llm-math&quot;</span>], llm=llm)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化代理</span></span><br><span class="line">agent = initialize_agent(</span><br><span class="line">    tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,</span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行代理</span></span><br><span class="line">result = agent.run(<span class="string">&quot;2025年全球最大的科技公司市值是多少？用科学计数法表示&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、LLM-应用开发实践指南"><a href="#二、LLM-应用开发实践指南" class="headerlink" title="二、LLM 应用开发实践指南"></a>二、LLM 应用开发实践指南</h2><h3 id="1-项目设置与环境配置"><a href="#1-项目设置与环境配置" class="headerlink" title="1. 项目设置与环境配置"></a>1. 项目设置与环境配置</h3><h4 id="创建-Python-虚拟环境"><a href="#创建-Python-虚拟环境" class="headerlink" title="创建 Python 虚拟环境"></a>创建 Python 虚拟环境</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建虚拟环境</span></span><br><span class="line">python -m venv venv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活虚拟环境</span></span><br><span class="line"><span class="comment"># Windows</span></span><br><span class="line"><span class="built_in">env</span>\Scripts\activate</span><br><span class="line"><span class="comment"># macOS/Linux</span></span><br><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">pip install langchain openai chromadb python-dotenv</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h4><p>创建 <code>.env</code> 文件，配置 API 密钥等敏感信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># .env 文件内容</span><br><span class="line">OPENAI_API_KEY=sk-xxxxxxxxxxxx</span><br><span class="line">PINECONE_API_KEY=xxxxxxxxxxxx</span><br><span class="line">SERPAPI_API_KEY=xxxxxxxxxxxx</span><br></pre></td></tr></table></figure>
+
+<p>在代码中加载环境变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line">load_dotenv()  <span class="comment"># 加载环境变量</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-构建-RAG-应用的完整流程"><a href="#2-构建-RAG-应用的完整流程" class="headerlink" title="2. 构建 RAG 应用的完整流程"></a>2. 构建 RAG 应用的完整流程</h3><h4 id="2-1-数据加载与预处理"><a href="#2-1-数据加载与预处理" class="headerlink" title="2.1 数据加载与预处理"></a>2.1 数据加载与预处理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.document_loaders <span class="keyword">import</span> PyPDFLoader, DirectoryLoader</span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载目录中的所有 PDF 文件</span></span><br><span class="line">loader = DirectoryLoader(<span class="string">&quot;./documents&quot;</span>, glob=<span class="string">&quot;**/*.pdf&quot;</span>, loader_cls=PyPDFLoader)</span><br><span class="line">documents = loader.load()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分割文档</span></span><br><span class="line">text_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">1000</span>,</span><br><span class="line">    chunk_overlap=<span class="number">200</span></span><br><span class="line">)</span><br><span class="line">split_docs = text_splitter.split_documents(documents)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-创建向量存储"><a href="#2-2-创建向量存储" class="headerlink" title="2.2 创建向量存储"></a>2.2 创建向量存储</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化嵌入模型</span></span><br><span class="line">embeddings = OpenAIEmbeddings()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建向量存储</span></span><br><span class="line">vector_store = Chroma.from_documents(</span><br><span class="line">    documents=split_docs,</span><br><span class="line">    embedding=embeddings,</span><br><span class="line">    persist_directory=<span class="string">&quot;./chroma_db&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 持久化向量存储</span></span><br><span class="line">vector_store.persist()</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-构建检索链"><a href="#2-3-构建检索链" class="headerlink" title="2.3 构建检索链"></a>2.3 构建检索链</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义提示模板</span></span><br><span class="line">prompt_template = <span class="string">&quot;&quot;&quot;使用以下上下文来回答问题。如果你不知道答案，就说你不知道，不要试图编造答案。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">上下文: &#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答: &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">PROMPT = PromptTemplate(</span><br><span class="line">    template=prompt_template,</span><br><span class="line">    input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化聊天模型</span></span><br><span class="line">llm = ChatOpenAI(model_name=<span class="string">&quot;gpt-4&quot;</span>, temperature=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建检索链</span></span><br><span class="line">qa_chain = RetrievalQA.from_chain_type(</span><br><span class="line">    llm=llm,</span><br><span class="line">    chain_type=<span class="string">&quot;stuff&quot;</span>,</span><br><span class="line">    retriever=vector_store.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">3</span>&#125;),</span><br><span class="line">    chain_type_kwargs=&#123;<span class="string">&quot;prompt&quot;</span>: PROMPT&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-创建-API-接口"><a href="#2-4-创建-API-接口" class="headerlink" title="2.4 创建 API 接口"></a>2.4 创建 API 接口</h4><p>使用 FastAPI 创建 API 接口，使应用可以通过 HTTP 请求访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QueryRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    question: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/query&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">query_rag</span>(<span class="params">request: QueryRequest</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = qa_chain.run(request.question)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;answer&quot;</span>: result&#125;</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">500</span>, detail=<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">import</span> uvicorn</span><br><span class="line">    uvicorn.run(app, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8000</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-提示工程最佳实践"><a href="#3-提示工程最佳实践" class="headerlink" title="3. 提示工程最佳实践"></a>3. 提示工程最佳实践</h3><h4 id="3-1-明确任务指令"><a href="#3-1-明确任务指令" class="headerlink" title="3.1 明确任务指令"></a>3.1 明确任务指令</h4><p>清晰明确地告诉模型要做什么，避免模糊的表述：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不好的提示</span></span><br><span class="line">prompt1 = <span class="string">&quot;请分析一下这份报告&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 好的提示</span></span><br><span class="line">prompt2 = <span class="string">&quot;请作为一名数据分析师，分析这份季度销售报告，重点关注销售额变化趋势、地区分布和产品类别表现，并提供3条业务改进建议。&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-使用结构化输出"><a href="#3-2-使用结构化输出" class="headerlink" title="3.2 使用结构化输出"></a>3.2 使用结构化输出</h4><p>要求模型以特定格式输出，便于后续处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 要求 JSON 格式输出</span></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;分析以下产品评价，并以 JSON 格式输出分析结果，包含情感倾向(正面/负面/中性)、主要关注点和改进建议。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">产品评价: 这款手机续航很好，但相机拍照效果一般，特别是在弱光环境下。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输出格式: &#123;&quot;sentiment&quot;: &quot;&quot;, &quot;focus_points&quot;: [], &quot;suggestions&quot;: []&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-提供示例"><a href="#3-3-提供示例" class="headerlink" title="3.3 提供示例"></a>3.3 提供示例</h4><p>通过示例展示期望的输出格式和内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 包含示例的提示</span></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;请将以下英文句子翻译成中文。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">示例:</span></span><br><span class="line"><span class="string">英文: &quot;The quick brown fox jumps over the lazy dog.&quot;</span></span><br><span class="line"><span class="string">中文: &quot;敏捷的棕色狐狸跳过懒狗。&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">英文: &quot;Artificial intelligence is transforming the world.&quot;</span></span><br><span class="line"><span class="string">中文: &quot;&quot;&quot;</span><span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、LLM-应用的评估与优化"><a href="#三、LLM-应用的评估与优化" class="headerlink" title="三、LLM 应用的评估与优化"></a>三、LLM 应用的评估与优化</h2><h3 id="1-评估指标"><a href="#1-评估指标" class="headerlink" title="1. 评估指标"></a>1. 评估指标</h3><p>评估 LLM 应用性能的关键指标包括：</p>
+<ul>
+<li><strong>相关性</strong>：输出内容与输入问题的相关程度</li>
+<li><strong>准确性</strong>：输出内容的事实正确性</li>
+<li><strong>完整性</strong>：是否包含所有必要信息</li>
+<li><strong>一致性</strong>：对相似问题的回答是否一致</li>
+<li><strong>响应时间</strong>：从输入到输出的时间延迟</li>
+<li><strong>成本效益</strong>：API 调用的成本与产生的价值比</li>
+</ul>
+<h3 id="2-常见问题与解决方案"><a href="#2-常见问题与解决方案" class="headerlink" title="2. 常见问题与解决方案"></a>2. 常见问题与解决方案</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>回答不准确</td>
+<td>增强 RAG 检索质量、提供更多上下文、使用更精确的提示</td>
+</tr>
+<tr>
+<td>幻觉问题</td>
+<td>增加事实核查步骤、限制回答范围、使用低 temperature 值</td>
+</tr>
+<tr>
+<td>响应速度慢</td>
+<td>使用流式响应、优化向量检索、考虑使用本地模型</td>
+</tr>
+<tr>
+<td>成本过高</td>
+<td>优化提示词减少 token 使用、使用更经济的模型、缓存常见查询</td>
+</tr>
+</tbody></table>
+<h3 id="3-监控与优化工具"><a href="#3-监控与优化工具" class="headerlink" title="3. 监控与优化工具"></a>3. 监控与优化工具</h3><p>使用 LangSmith 进行 LLM 应用的监控和优化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.callbacks.tracers <span class="keyword">import</span> LangChainTracer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 LangSmith</span></span><br><span class="line">os.environ[<span class="string">&quot;LANGCHAIN_TRACING_V2&quot;</span>] = <span class="string">&quot;true&quot;</span></span><br><span class="line">os.environ[<span class="string">&quot;LANGCHAIN_API_KEY&quot;</span>] = <span class="string">&quot;your-langsmith-api-key&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化跟踪器</span></span><br><span class="line">tracer = LangChainTracer()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用跟踪器</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_llm</span>():</span><br><span class="line">    <span class="keyword">return</span> ChatOpenAI(</span><br><span class="line">        model_name=<span class="string">&quot;gpt-4&quot;</span>,</span><br><span class="line">        temperature=<span class="number">0</span>,</span><br><span class="line">        callbacks=[tracer]</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、LLM-技术前沿探索"><a href="#四、LLM-技术前沿探索" class="headerlink" title="四、LLM 技术前沿探索"></a>四、LLM 技术前沿探索</h2><h3 id="1-多模态-LLM"><a href="#1-多模态-LLM" class="headerlink" title="1. 多模态 LLM"></a>1. 多模态 LLM</h3><p>多模态 LLM 能够同时处理文本、图像、音频等多种数据类型，提供更丰富的交互体验。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GPT-4V 多模态示例</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line">client = OpenAI()</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;gpt-4-vision-preview&quot;</span>,</span><br><span class="line">    messages=[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: [</span><br><span class="line">                &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>, <span class="string">&quot;text&quot;</span>: <span class="string">&quot;分析这张图表显示的趋势&quot;</span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;image_url&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;image_url&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://example.com/chart.png&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    max_tokens=<span class="number">300</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(response.choices[<span class="number">0</span>].message.content)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-本地部署的开源-LLM"><a href="#2-本地部署的开源-LLM" class="headerlink" title="2. 本地部署的开源 LLM"></a>2. 本地部署的开源 LLM</h3><p>随着开源 LLM 技术的发展，现在可以在本地部署高性能的语言模型，保护数据隐私并降低成本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 Ollama 本地运行 Llama 3</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 API 端点</span></span><br><span class="line">url = <span class="string">&quot;http://localhost:11434/api/chat&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备请求数据</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;model&quot;</span>: <span class="string">&quot;llama3&quot;</span>,</span><br><span class="line">    <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">        &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;解释量子计算的基本原理&quot;</span>&#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;stream&quot;</span>: <span class="literal">False</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送请求</span></span><br><span class="line">response = requests.post(url, data=json.dumps(data))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理响应</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">    result = response.json()</span><br><span class="line">    <span class="built_in">print</span>(result[<span class="string">&quot;message&quot;</span>][<span class="string">&quot;content&quot;</span>])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;请求失败: <span class="subst">&#123;response.status_code&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Agent-系统与自主-AI"><a href="#3-Agent-系统与自主-AI" class="headerlink" title="3. Agent 系统与自主 AI"></a>3. Agent 系统与自主 AI</h3><p>Agent 系统代表了 LLM 应用的未来发展方向，能够自主规划和执行复杂任务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># AutoGen 多代理系统示例</span></span><br><span class="line"><span class="keyword">from</span> autogen <span class="keyword">import</span> AssistantAgent, UserProxyAgent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建代理</span></span><br><span class="line">assistant = AssistantAgent(<span class="string">&quot;assistant&quot;</span>, llm_config=&#123;<span class="string">&quot;model&quot;</span>: <span class="string">&quot;gpt-4&quot;</span>&#125;)</span><br><span class="line">user_proxy = UserProxyAgent(<span class="string">&quot;user_proxy&quot;</span>, code_execution_config=&#123;<span class="string">&quot;work_dir&quot;</span>: <span class="string">&quot;coding&quot;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动对话</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_task</span>(<span class="params">task</span>):</span><br><span class="line">    user_proxy.initiate_chat(assistant, message=task)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行复杂任务</span></span><br><span class="line">run_task(<span class="string">&quot;创建一个 Python 程序，分析过去30天的股票数据并生成可视化图表&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、LLM-应用开发未来展望"><a href="#五、LLM-应用开发未来展望" class="headerlink" title="五、LLM 应用开发未来展望"></a>五、LLM 应用开发未来展望</h2><h3 id="1-技术发展趋势"><a href="#1-技术发展趋势" class="headerlink" title="1. 技术发展趋势"></a>1. 技术发展趋势</h3><ul>
+<li><strong>模型专业化</strong>：针对特定领域优化的专业模型将越来越多</li>
+<li><strong>模型效率提升</strong>：更高效的模型架构和推理技术将降低资源需求</li>
+<li><strong>多模态融合</strong>：文本、图像、音频、视频等多种模态的深度融合</li>
+<li><strong>工具使用能力增强</strong>：LLM 与外部工具的集成将更加紧密和智能</li>
+<li><strong>个性化体验</strong>：基于用户偏好和历史行为的个性化模型响应</li>
+</ul>
+<h3 id="2-应用场景扩展"><a href="#2-应用场景扩展" class="headerlink" title="2. 应用场景扩展"></a>2. 应用场景扩展</h3><p>LLM 技术正在迅速扩展到各个行业和应用场景：</p>
+<ul>
+<li><strong>智能客服</strong>：24&#x2F;7 全天候客户支持，处理复杂咨询</li>
+<li><strong>内容创作</strong>：辅助写作、设计、创意生成</li>
+<li><strong>教育辅导</strong>：个性化学习体验和智能辅导</li>
+<li><strong>医疗健康</strong>：医疗记录分析、辅助诊断、患者教育</li>
+<li><strong>科研加速</strong>：文献综述、实验设计、数据解释</li>
+<li><strong>法律文书处理</strong>：合同审查、法律研究、文档生成</li>
+</ul>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>大语言模型技术正在深刻改变软件开发的方式，为各行各业带来前所未有的创新机会。通过本文介绍的实践指南，您可以快速上手 LLM 应用开发，并构建具有实际价值的 AI 应用。</p>
+<p>随着技术的不断发展，我们可以期待 LLM 应用在性能、功能和应用场景上的进一步突破。作为开发者，及时学习和掌握这些前沿技术，将有助于我们在 AI 时代保持竞争力。</p>
+<p>未来，LLM 应用开发将更加注重用户体验、隐私保护和伦理问题。让我们一起拥抱这一技术革命，创造更智能、更高效、更美好的未来。</p>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 翎羽的个人博客
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;翎羽
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>
